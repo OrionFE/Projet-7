@@ -4,20 +4,43 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Lato:wght@400;700&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>Les petits plats</title>
   </head>
   <body>
-    <header>
-      <img src="./Vector.png" alt="icone du site" />
-      <h1>Les petits plats</h1>
-    </header>
+    <div class="container">
+      <header>
+        <div class="title">
+          <img src="./Vector.png" alt="logo du site" />
+          <h1>Les petits plats</h1>
+        </div>
 
-    <nav>
-      <input type="text" />
-    </nav>
+        <div class="menu">
+          <div class="search">
+            <input type="text" />
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
 
-    <section class="filter">
-      <div class="selected-filter"></div>
-    </section>
+          <div class="filters">
+            <div class="selected-filters"></div>
+          </div>
+        </div>
+      </header>
+
+      <main></main>
+    </div>
   </body>
 </html>

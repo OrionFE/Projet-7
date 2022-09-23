@@ -5,3 +5,50 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 42px;
+  margin-bottom: 17px;
+}
+.title img {
+  width: 50.48px;
+}
+
+h1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 36px;
+  color: #d04f4f;
+}
+
+.menu {
+  width: 100%;
+  position: relative;
+}
+
+.menu input {
+  width: 100%;
+  background: #e7e7e7;
+  height: 69px;
+  font-size: 18px;
+  font-family: "Lato", sans-serif;
+  padding-left: 24px;
+  border: none;
+  border-radius: 5px;
+}
+
+.menu .fa-solid {
+  position: absolute;
+  top: 50%;
+  right: 19px;
+  transform: translate(0, -50%);
+  font-size: 24px;
+}
