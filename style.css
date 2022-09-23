@@ -52,3 +52,78 @@ h1 {
   transform: translate(0, -50%);
   font-size: 24px;
 }
+
+.recipe-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3.5%;
+}
+
+.card {
+  width: 31%;
+  height: 364px;
+  background: #e7e7e7;
+  margin: 25px 0;
+}
+
+.card .img-to-display {
+  width: 100%;
+  height: 178px;
+  background: #c7bebe;
+}
+
+.card .heading-card {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 3%;
+}
+
+.card h3 {
+  font-family: "Lato", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+.card .timer {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.card .tuto {
+  display: flex;
+  height: 100px;
+}
+
+.card ul {
+  font-family: "Lato", sans-serif;
+  list-style: none;
+  margin-left: 3%;
+  width: 45%;
+  padding-right: 5px;
+  overflow-y: hidden;
+}
+
+.card li {
+}
+
+.card .prep-container {
+  width: 45%;
+}
+
+.card .prep {
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+}
+
+.card span {
+  font-size: 14px;
+  font-weight: 700;
+}
