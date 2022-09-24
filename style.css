@@ -164,6 +164,10 @@ h1 {
   font-size: 14px;
 }
 
+.selected-filters .tags p {
+  pointer-events: none;
+}
+
 .selected-filters .ingredients {
   background: #3282f7;
 }
@@ -259,4 +263,8 @@ h1 {
   margin-top: 50px;
   font-family: "Lato", sans-serif;
   display: none;
+}
+
+input:focus {
+  outline: none;
 }

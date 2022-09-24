@@ -170,14 +170,22 @@ function displayFilter(inputToAdd, itemFilter) {
     boxFilter.appendChild(filterItem);
   });
 
+  if (inputBox.lastChild.className == "list-filter ingredients") {
+    inputBox.lastChild.remove();
+  }
+
   inputBox.appendChild(boxFilter);
 
   addTag();
 }
 
-function hideFilterBox() {
+function hideFilterBox(input, placeholder) {
   const boxFilter = document.querySelectorAll(".list-filter");
-
+  input.value = "";
+  input.setAttribute(
+    "placeholder",
+    `${placeholder.charAt(0).toUpperCase() + placeholder.slice(1)}`
+  );
   boxFilter.forEach((box) => {
     box.remove();
   });
@@ -185,27 +193,49 @@ function hideFilterBox() {
 
 function openDropdown() {
   const inputChevronDown = document.querySelectorAll(".fa-chevron-down");
+  const allInput = document.querySelectorAll(".input-container input");
 
   inputChevronDown.forEach((chevronDown) => {
+    chevronDown.previousElementSibling.disabled = true;
+
     chevronDown.addEventListener("click", (e) => {
       const input = e.target.previousElementSibling;
       const boxFilter = `getAll${input.placeholder}`;
+      const chevronUp = e.target.nextElementSibling;
+      const chevronDown = e.target;
+      let test = 0;
 
-      inputChevronDown.forEach((items) => {
-        items.previousElementSibling.classList.remove("input-open");
-        hideFilterBox();
+      allInput.forEach((item) => {
+        item.classList.remove("input-open");
+        item.nextElementSibling.style.display = "block";
+        item.nextElementSibling.nextElementSibling.style.display = "none";
+        hideFilterBox(item, item.id);
       });
 
-      if (input.className == "input opened") {
-        input.classList.remove("input-open");
-        input.classList.remove("opened");
-        hideFilterBox();
-      } else {
-        input.classList.add("opened");
-        input.classList.add("input-open");
-        let functionToCall = window[boxFilter]();
-        displayFilter(input, functionToCall);
-      }
+      input.classList.add("input-open");
+      chevronUp.style.display = "block";
+      chevronDown.style.display = "none";
+
+      let getFilter = window[boxFilter]();
+      displayFilter(input, getFilter);
+    });
+  });
+}
+
+function closeDropDown() {
+  const inputChevronup = document.querySelectorAll(".fa-chevron-up");
+
+  inputChevronup.forEach((chevronUp) => {
+    chevronUp.previousElementSibling.previousElementSibling.disabled = false;
+
+    chevronUp.addEventListener("click", (e) => {
+      const input = e.target.previousElementSibling.previousElementSibling;
+      const chevronDown = e.target.previousElementSibling;
+      chevronUp.style.display = "none";
+      chevronDown.style.display = "block";
+
+      input.classList.remove("input-open");
+      hideFilterBox(input, input.id);
     });
   });
 }
@@ -239,7 +269,6 @@ function removeTag() {
 
   tagToRemove.forEach((tag) => {
     const exitBtn = tag.lastChild;
-    console.log(exitBtn);
     exitBtn.addEventListener("click", (e) => {
       const divToAdd = e.target.parentElement.className.split(" ")[1];
       const boxFilter = document.querySelectorAll(".list-filter");
@@ -256,16 +285,41 @@ function removeTag() {
           const divTagToAdd = divTag.firstChild;
           div.appendChild(divTagToAdd);
           divTag.remove();
-          console.log("nope");
         }
       });
     });
   });
 }
 
+function lauchSortTag() {
+  const inputTag = document.querySelectorAll(".input");
+
+  inputTag.forEach((input) => {
+    const listTag = input.parentElement.lastChild;
+    const allTag = listTag.querySelectorAll("p");
+
+    input.addEventListener("input", (e) => {
+      sortTag(input, e.target.value, allTag);
+    });
+  });
+}
+
+function sortTag(input, tagToSort, listTag) {
+  const tagToShow = [];
+
+  listTag.forEach((tag) => {
+    if (tag.innerText.toLowerCase().includes(tagToSort)) {
+      tagToShow.push(tag.innerText);
+    }
+  });
+
+  displayFilter(input, tagToShow);
+}
+
 async function init() {
   await getRecipes();
   displayRecipe(recipes);
+  closeDropDown();
   openDropdown();
   lauchSortBy();
 }
