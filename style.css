@@ -31,10 +31,13 @@ h1 {
 
 .menu {
   width: 100%;
+}
+
+.search {
   position: relative;
 }
 
-.menu input {
+.search input {
   width: 100%;
   background: #e7e7e7;
   height: 69px;
@@ -45,12 +48,72 @@ h1 {
   border-radius: 5px;
 }
 
-.menu .fa-solid {
+.search .fa-solid {
   position: absolute;
   top: 50%;
   right: 19px;
   transform: translate(0, -50%);
   font-size: 24px;
+}
+
+.filters {
+  margin-top: 50px;
+}
+
+.filters .input {
+  width: 170px;
+  height: 69px;
+  font-family: "Lato", sans-serif;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.filters .input::placeholder {
+  color: white;
+}
+
+.input-container {
+  position: relative;
+  display: inline-flex;
+  margin-right: 20px;
+}
+
+.input-container > i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translate(0, -50%);
+  color: white;
+  cursor: pointer;
+}
+
+#ingredients {
+  background: #3282f7;
+  border: none;
+  border-radius: 5px;
+  padding-left: 19px;
+}
+
+#appareils {
+  background: #68d9a4;
+  border: none;
+  border-radius: 5px;
+  padding-left: 19px;
+}
+
+#ustensiles {
+  background: #ed6454;
+  border: none;
+  border-radius: 5px;
+  padding-left: 19px;
+}
+
+/* input toggle */
+
+.filters .input-open {
+  width: 40vw;
+  color: yellow;
 }
 
 .recipe-container {
@@ -106,9 +169,6 @@ h1 {
   width: 45%;
   padding-right: 5px;
   overflow-y: hidden;
-}
-
-.card li {
 }
 
 .card .prep-container {

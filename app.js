@@ -13,7 +13,6 @@ async function getRecipes() {
 
 function displayRecipe() {
   const containerRecipe = document.querySelector(".recipe-container");
-  console.log(containerRecipe);
   recipes.forEach((recipe) => {
     const { name, time, ingredients, description } = recipe;
 
@@ -84,9 +83,63 @@ function displayRecipe() {
   });
 }
 
+function getAllIngredients() {
+  let ingredientsWithDuplicate = [];
+
+  recipes.forEach((item) => {
+    ingredientsWithDuplicate.push(item.ingredients[0].ingredient);
+  });
+
+  return [...new Set(ingredientsWithDuplicate)];
+}
+
+function getAllAppareils() {
+  let appareilsWithDuplicate = [];
+
+  recipes.forEach((item) => {
+    appareilsWithDuplicate.push(item.appliance);
+  });
+
+  return [...new Set(appareilsWithDuplicate)];
+}
+
+function getAllUstensiles() {
+  let ustensilesWithDuplicate = [];
+
+  recipes.forEach((item) => {
+    ustensilesWithDuplicate.push(item.ustensils[0]);
+  });
+
+  return [...new Set(ustensilesWithDuplicate)];
+}
+
+function openDropdown() {
+  const inputChevronDown = document.querySelectorAll(".fa-chevron-down");
+
+  inputChevronDown.forEach((chevronDown) => {
+    chevronDown.addEventListener("click", (e) => {
+      const input = e.target.previousElementSibling;
+
+      inputChevronDown.forEach((items) => {
+        items.previousElementSibling.classList.remove("input-open");
+      });
+
+      console.log(input.className);
+      if (input.className == "input opened") {
+        input.classList.remove("input-open");
+        input.classList.remove("opened");
+      } else {
+        input.classList.add("opened");
+        input.classList.add("input-open");
+      }
+    });
+  });
+}
+
 async function init() {
   await getRecipes();
   displayRecipe();
+  openDropdown();
 }
 
 init();
