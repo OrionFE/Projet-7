@@ -113,24 +113,57 @@ function getAllUstensiles() {
   return [...new Set(ustensilesWithDuplicate)];
 }
 
+function displayFilter(inputToAdd, itemFilter) {
+  const inputBox = inputToAdd.parentElement;
+  const boxFilter = document.createElement("div");
+  boxFilter.classList.add("list-filter");
+  boxFilter.classList.add(`${inputToAdd.id}`);
+
+  console.log(itemFilter);
+
+  itemFilter.forEach((item) => {
+    const filterItem = document.createElement("p");
+    filterItem.innerText = item;
+    boxFilter.appendChild(filterItem);
+  });
+
+  console.log(boxFilter);
+  console.log(inputBox);
+
+  inputBox.appendChild(boxFilter);
+}
+
+function hideFilterBox() {
+  const boxFilter = document.querySelectorAll(".list-filter");
+
+  boxFilter.forEach((box) => {
+    box.remove();
+  });
+}
+
 function openDropdown() {
   const inputChevronDown = document.querySelectorAll(".fa-chevron-down");
 
   inputChevronDown.forEach((chevronDown) => {
     chevronDown.addEventListener("click", (e) => {
       const input = e.target.previousElementSibling;
+      const boxFilter = `getAll${input.placeholder}`;
+      console.log(boxFilter);
 
       inputChevronDown.forEach((items) => {
         items.previousElementSibling.classList.remove("input-open");
+        hideFilterBox();
       });
 
-      console.log(input.className);
       if (input.className == "input opened") {
         input.classList.remove("input-open");
         input.classList.remove("opened");
+        hideFilterBox();
       } else {
         input.classList.add("opened");
         input.classList.add("input-open");
+        let functionToCall = window[boxFilter]();
+        displayFilter(input, functionToCall);
       }
     });
   });
