@@ -7,7 +7,6 @@ async function getRecipes() {
     .then((response) => response.json())
     .then((data) => {
       recipes = data;
-      console.log(recipes);
     });
 }
 
@@ -119,18 +118,15 @@ function displayFilter(inputToAdd, itemFilter) {
   boxFilter.classList.add("list-filter");
   boxFilter.classList.add(`${inputToAdd.id}`);
 
-  console.log(itemFilter);
-
   itemFilter.forEach((item) => {
     const filterItem = document.createElement("p");
     filterItem.innerText = item;
     boxFilter.appendChild(filterItem);
   });
 
-  console.log(boxFilter);
-  console.log(inputBox);
-
   inputBox.appendChild(boxFilter);
+
+  addTag();
 }
 
 function hideFilterBox() {
@@ -148,7 +144,6 @@ function openDropdown() {
     chevronDown.addEventListener("click", (e) => {
       const input = e.target.previousElementSibling;
       const boxFilter = `getAll${input.placeholder}`;
-      console.log(boxFilter);
 
       inputChevronDown.forEach((items) => {
         items.previousElementSibling.classList.remove("input-open");
@@ -165,6 +160,59 @@ function openDropdown() {
         let functionToCall = window[boxFilter]();
         displayFilter(input, functionToCall);
       }
+    });
+  });
+}
+
+function addTag() {
+  const tag = document.querySelectorAll(".list-filter p");
+
+  tag.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      const classTag = e.target.parentElement;
+      const classTagColor = classTag.className.split(" ")[1];
+      const tagToAdd = e.target;
+      const selectedFilters = document.querySelector(".selected-filters");
+      const divTag = document.createElement("div");
+      divTag.classList.add("tags");
+      divTag.classList.add(`${classTagColor}`);
+      const closeTag = document.createElement("i");
+      closeTag.classList.add("fa-regular");
+      closeTag.classList.add("fa-circle-xmark");
+      divTag.appendChild(tagToAdd);
+      divTag.appendChild(closeTag);
+
+      selectedFilters.appendChild(divTag);
+      removeTag();
+    });
+  });
+}
+
+function removeTag() {
+  const tagToRemove = document.querySelectorAll(".tags");
+
+  tagToRemove.forEach((tag) => {
+    const exitBtn = tag.lastChild;
+    console.log(exitBtn);
+    exitBtn.addEventListener("click", (e) => {
+      const divToAdd = e.target.parentElement.className.split(" ")[1];
+      const boxFilter = document.querySelectorAll(".list-filter");
+
+      if (boxFilter.length === 0) {
+        tag.remove();
+      }
+
+      boxFilter.forEach((div) => {
+        const classDiv = div.className.split(" ")[1];
+
+        if (classDiv == divToAdd) {
+          const divTag = e.target.parentElement;
+          const divTagToAdd = divTag.firstChild;
+          div.appendChild(divTagToAdd);
+          divTag.remove();
+          console.log("nope");
+        }
+      });
     });
   });
 }
