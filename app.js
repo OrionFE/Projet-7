@@ -10,9 +10,48 @@ async function getRecipes() {
     });
 }
 
-function displayRecipe() {
-  const containerRecipe = document.querySelector(".recipe-container");
+function lauchSortBy() {
+  const searchBar = document.getElementById("search-bar");
+
+  searchBar.addEventListener("input", (e) => {
+    if (e.inputType == "deleteContentBackward" && e.target.value.length < 3) {
+      sortBy(e.target.value);
+    }
+    if (e.target.value.length > 2) {
+      sortBy(e.target.value);
+    }
+  });
+}
+
+function sortBy(wordToFilter) {
+  let recipesToShow = [];
+
   recipes.forEach((recipe) => {
+    const { name, ingredients, description } = recipe;
+
+    const ingredientsArray = [...ingredients];
+    let listIngredient = "";
+
+    ingredientsArray.forEach((ing) => {
+      listIngredient = `${listIngredient} , ${ing.ingredient}`;
+    });
+
+    if (
+      name.toLowerCase().includes(wordToFilter) ||
+      description.toLowerCase().includes(wordToFilter) ||
+      listIngredient.toLowerCase().includes(wordToFilter)
+    ) {
+      recipesToShow.push(recipe);
+    }
+  });
+
+  displayRecipe(recipesToShow);
+}
+
+function displayRecipe(recipesArray) {
+  const containerRecipe = document.querySelector(".recipe-container");
+  containerRecipe.innerText = "";
+  recipesArray.forEach((recipe) => {
     const { name, time, ingredients, description } = recipe;
 
     const card = document.createElement("div");
@@ -80,6 +119,13 @@ function displayRecipe() {
 
     containerRecipe.appendChild(card);
   });
+
+  const noRecipe = document.querySelector(".no-recipe");
+  if (containerRecipe.childElementCount == 0) {
+    noRecipe.style.display = "block";
+  } else {
+    noRecipe.style.display = "none";
+  }
 }
 
 function getAllIngredients() {
@@ -219,8 +265,9 @@ function removeTag() {
 
 async function init() {
   await getRecipes();
-  displayRecipe();
+  displayRecipe(recipes);
   openDropdown();
+  lauchSortBy();
 }
 
 init();
