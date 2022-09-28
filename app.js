@@ -170,9 +170,7 @@ function displayFilter(inputToAdd, itemFilter) {
     boxFilter.appendChild(filterItem);
   });
 
-  if (inputBox.lastChild.className == "list-filter ingredients") {
-    inputBox.lastChild.remove();
-  }
+  inputBox.lastChild.remove();
 
   inputBox.appendChild(boxFilter);
 
@@ -197,7 +195,6 @@ function openDropdown() {
 
   inputChevronDown.forEach((chevronDown) => {
     chevronDown.previousElementSibling.disabled = true;
-
     chevronDown.addEventListener("click", (e) => {
       const input = e.target.previousElementSibling;
       const boxFilter = `getAll${input.placeholder}`;
@@ -209,15 +206,19 @@ function openDropdown() {
         item.classList.remove("input-open");
         item.nextElementSibling.style.display = "block";
         item.nextElementSibling.nextElementSibling.style.display = "none";
+        item.disabled = true;
         hideFilterBox(item, item.id);
       });
 
       input.classList.add("input-open");
       chevronUp.style.display = "block";
       chevronDown.style.display = "none";
+      chevronDown.previousElementSibling.disabled = false;
+      input.placeholder = `Rechercher un ${input.id.slice(0, -1)}`;
 
       let getFilter = window[boxFilter]();
       displayFilter(input, getFilter);
+      searchTag(input);
     });
   });
 }
@@ -233,6 +234,7 @@ function closeDropDown() {
       const chevronDown = e.target.previousElementSibling;
       chevronUp.style.display = "none";
       chevronDown.style.display = "block";
+      input.disabled = true;
 
       input.classList.remove("input-open");
       hideFilterBox(input, input.id);
@@ -240,80 +242,68 @@ function closeDropDown() {
   });
 }
 
-function addTag() {
-  const tag = document.querySelectorAll(".list-filter p");
+function searchTag(input) {
+  const listFilter = document.querySelector(".list-filter");
+  const nodeFilter = [...listFilter.childNodes];
+  let tagToShow = [];
 
-  tag.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      const classTag = e.target.parentElement;
-      const classTagColor = classTag.className.split(" ")[1];
-      const tagToAdd = e.target;
-      const selectedFilters = document.querySelector(".selected-filters");
-      const divTag = document.createElement("div");
-      divTag.classList.add("tags");
-      divTag.classList.add(`${classTagColor}`);
-      const closeTag = document.createElement("i");
-      closeTag.classList.add("fa-regular");
-      closeTag.classList.add("fa-circle-xmark");
-      divTag.appendChild(tagToAdd);
-      divTag.appendChild(closeTag);
+  const arrayFilter = nodeFilter.map((node) => {
+    return node.innerText.toLowerCase();
+  });
 
-      selectedFilters.appendChild(divTag);
-      removeTag();
+  input.addEventListener("input", (e) => {
+    const tagToSort = e.target.value;
+    tagToShow = [];
+    arrayFilter.forEach((tag) => {
+      if (tag.includes(tagToSort.toLowerCase())) {
+        let tagFirstLetterCapital = tag[0].toUpperCase() + tag.slice(1);
+        tagToShow.push(tagFirstLetterCapital);
+      }
+
+      displayFilter(input, tagToShow);
     });
   });
 }
 
-function removeTag() {
-  const tagToRemove = document.querySelectorAll(".tags");
+function addTag() {
+  const listFilter = document.querySelectorAll(".list-filter");
+  const selectedFilters = document.querySelector(".selected-filters");
 
-  tagToRemove.forEach((tag) => {
-    const exitBtn = tag.lastChild;
-    exitBtn.addEventListener("click", (e) => {
-      const divToAdd = e.target.parentElement.className.split(" ")[1];
-      const boxFilter = document.querySelectorAll(".list-filter");
+  listFilter.forEach((filter) => {
+    const allFilter = [...filter.childNodes];
 
-      if (boxFilter.length === 0) {
-        tag.remove();
-      }
+    allFilter.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        item.classList.add("filter-added");
 
-      boxFilter.forEach((div) => {
-        const classDiv = div.className.split(" ")[1];
+        let cloneFilter = item.cloneNode(true);
 
-        if (classDiv == divToAdd) {
-          const divTag = e.target.parentElement;
-          const divTagToAdd = divTag.firstChild;
-          div.appendChild(divTagToAdd);
-          divTag.remove();
-        }
+        // get id element parent for style like blue green or red
+        const parentFilter = item.parentElement.classList[1];
+
+        cloneFilter.classList.add(parentFilter);
+        cloneFilter.classList.add("tags");
+
+        const closeTag = document.createElement("i");
+        closeTag.classList.add("fa-regular");
+        closeTag.classList.add("fa-circle-xmark");
+        cloneFilter.appendChild(closeTag);
+        selectedFilters.appendChild(cloneFilter);
+        removeTag();
       });
     });
   });
 }
 
-function lauchSortTag() {
-  const inputTag = document.querySelectorAll(".input");
+function removeTag() {
+  const tags = document.querySelectorAll(".selected-filters .tags");
 
-  inputTag.forEach((input) => {
-    const listTag = input.parentElement.lastChild;
-    const allTag = listTag.querySelectorAll("p");
-
-    input.addEventListener("input", (e) => {
-      sortTag(input, e.target.value, allTag);
+  tags.forEach((tag) => {
+    tag.classList.remove("filter-added");
+    tag.lastChild.addEventListener("click", () => {
+      tag.remove();
     });
   });
-}
-
-function sortTag(input, tagToSort, listTag) {
-  const tagToShow = [];
-
-  listTag.forEach((tag) => {
-    if (tag.innerText.toLowerCase().includes(tagToSort)) {
-      tagToShow.push(tag.innerText);
-    }
-  });
-
-  displayFilter(input, tagToShow);
 }
 
 async function init() {
@@ -325,3 +315,29 @@ async function init() {
 }
 
 init();
+
+// function lauchSortTag() {
+//   const inputTag = document.querySelectorAll(".input-container");
+
+//   inputTag.forEach((input) => {
+//     const listTag = input.parentElement.lastChild;
+//     const allTag = listTag.querySelectorAll("p");
+
+//     input.addEventListener("input", (e) => {
+//       console.log("test");
+//       sortTag(input, e.target.value, allTag);
+//     });
+//   });
+// }
+
+// function sortTag(input, tagToSort, listTag) {
+//   const tagToShow = [];
+
+//   listTag.forEach((tag) => {
+//     if (tag.innerText.toLowerCase().includes(tagToSort)) {
+//       tagToShow.push(tag.innerText);
+//     }
+//   });
+
+//   displayFilter(input, tagToShow);
+// }

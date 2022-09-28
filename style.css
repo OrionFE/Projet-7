@@ -79,7 +79,7 @@ h1 {
 .input-container {
   position: relative;
   display: inline-flex;
-  margin-right: 20px;
+  margin-right: 18px;
 }
 
 .input-container > i {
@@ -108,6 +108,10 @@ h1 {
 .filters .input-open {
   width: 40vw;
   border-radius: 5px 5px 0 0;
+}
+
+.filters .input-open::placeholder {
+  opacity: 50%;
 }
 
 /* list filter */
@@ -267,4 +271,11 @@ h1 {
 
 input:focus {
   outline: none;
+}
+
+.filter-added {
+  pointer-events: none;
+
+  font-weight: 700;
+  font-size: 20px;
 }
