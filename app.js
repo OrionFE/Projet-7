@@ -170,8 +170,6 @@ function displayFilter(inputToAdd, itemFilter) {
     boxFilter.appendChild(filterItem);
   });
 
-  inputBox.lastChild.remove();
-
   inputBox.appendChild(boxFilter);
 
   addTag();
@@ -185,7 +183,7 @@ function hideFilterBox(input, placeholder) {
     `${placeholder.charAt(0).toUpperCase() + placeholder.slice(1)}`
   );
   boxFilter.forEach((box) => {
-    box.remove();
+    box.style.display = "none";
   });
 }
 
@@ -200,7 +198,6 @@ function openDropdown() {
       const boxFilter = `getAll${input.placeholder}`;
       const chevronUp = e.target.nextElementSibling;
       const chevronDown = e.target;
-      let test = 0;
 
       allInput.forEach((item) => {
         item.classList.remove("input-open");
@@ -217,7 +214,12 @@ function openDropdown() {
       input.placeholder = `Rechercher un ${input.id.slice(0, -1)}`;
 
       let getFilter = window[boxFilter]();
-      displayFilter(input, getFilter);
+
+      if (!input.parentElement.lastChild.className) {
+        displayFilter(input, getFilter);
+      } else {
+        input.parentElement.lastChild.style.display = "grid";
+      }
       searchTag(input);
     });
   });
@@ -243,10 +245,10 @@ function closeDropDown() {
 }
 
 function searchTag(input) {
+  const inputBox = input.parentElement;
   const listFilter = document.querySelector(".list-filter");
   const nodeFilter = [...listFilter.childNodes];
   let tagToShow = [];
-
   const arrayFilter = nodeFilter.map((node) => {
     return node.innerText.toLowerCase();
   });
@@ -259,7 +261,7 @@ function searchTag(input) {
         let tagFirstLetterCapital = tag[0].toUpperCase() + tag.slice(1);
         tagToShow.push(tagFirstLetterCapital);
       }
-
+      inputBox.lastChild.remove();
       displayFilter(input, tagToShow);
     });
   });
@@ -289,20 +291,30 @@ function addTag() {
         closeTag.classList.add("fa-circle-xmark");
         cloneFilter.appendChild(closeTag);
         selectedFilters.appendChild(cloneFilter);
-        removeTag();
+        removeTag(item.parentElement);
       });
     });
   });
 }
 
-function removeTag() {
+function removeTag(input) {
   const tags = document.querySelectorAll(".selected-filters .tags");
 
   tags.forEach((tag) => {
     tag.classList.remove("filter-added");
-    tag.lastChild.addEventListener("click", () => {
+
+    function resetTag() {
+      const filterAdded = document.querySelectorAll(".filter-added");
+
+      filterAdded.forEach((filter) => {
+        if (filter.innerText === tag.innerText) {
+          filter.classList.remove("filter-added");
+        }
+      });
+
       tag.remove();
-    });
+    }
+    tag.lastChild.addEventListener("click", resetTag);
   });
 }
 
@@ -315,29 +327,3 @@ async function init() {
 }
 
 init();
-
-// function lauchSortTag() {
-//   const inputTag = document.querySelectorAll(".input-container");
-
-//   inputTag.forEach((input) => {
-//     const listTag = input.parentElement.lastChild;
-//     const allTag = listTag.querySelectorAll("p");
-
-//     input.addEventListener("input", (e) => {
-//       console.log("test");
-//       sortTag(input, e.target.value, allTag);
-//     });
-//   });
-// }
-
-// function sortTag(input, tagToSort, listTag) {
-//   const tagToShow = [];
-
-//   listTag.forEach((tag) => {
-//     if (tag.innerText.toLowerCase().includes(tagToSort)) {
-//       tagToShow.push(tag.innerText);
-//     }
-//   });
-
-//   displayFilter(input, tagToShow);
-// }
