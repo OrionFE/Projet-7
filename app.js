@@ -322,7 +322,6 @@ function sortByTags() {
     }
   });
 
-  console.log(arraySorted);
   displayRecipe(arraySorted);
 }
 
@@ -411,17 +410,3 @@ async function init() {
 }
 
 init();
-
-// arraySelectedFilterIng.forEach((filter) => {
-//   const filterLowerCase = filter.toLowerCase();
-//   // console.log(listIngredient);
-//   console.log(filter);
-
-//   if (
-//     listIngredient.toLowerCase().includes(filterLowerCase)
-//     // appliance.toLowerCase().includes(filterLowerCase) &&
-//     // stringUstensils.toLowerCase().includes(filterLowerCase)
-//   ) {
-//     arraySorted.push(recipe);
-//   }
-// });
